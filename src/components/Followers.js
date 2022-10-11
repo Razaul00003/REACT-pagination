@@ -1,21 +1,80 @@
 import styled from "styled-components";
+import { useState } from "react";
 const Followers = (props) => {
-  const users = props.data;
+  const data = props.data;
+  const [start, setStart] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [showStatus, setShowStatus] = useState(false);
+
+  const handleShowStatus = () => {
+    setShowStatus(true);
+
+    let perPageItem = 10;
+    let selectedusers = data.slice(start, start + perPageItem);
+    console.log(start, perPageItem, selectedusers);
+    setUsers(selectedusers);
+    console.log(users);
+    // setUsers(selectedusers);
+  };
+  const handlePrev = () => {
+    if (start > 0) {
+      let perPageItem = 10;
+      setStart(start - 10);
+      let selectedusers = data.slice(start, start + perPageItem);
+      console.log(start, perPageItem, selectedusers);
+      setUsers(selectedusers);
+    }
+  };
+  const handleNext = () => {
+    if (start < 30) {
+      let perPageItem = 10;
+      setStart(start + 10);
+      let selectedusers = data.slice(start, start + perPageItem);
+      console.log(start, perPageItem, selectedusers);
+      setUsers(selectedusers);
+    }
+
+    console.log(users);
+  };
+
   return (
-    <Wrapper className="container">
-      <div className="user-container">
-        {users.map((user, index) => {
-          const { avatar_url, login, html_url } = user;
-          return (
-            <div className="user" key={index}>
-              <img src={avatar_url} alt={login} />
-              <p>{login}</p>
-              <a href={html_url}> View Github Profile</a>
-            </div>
-          );
-        })}
-      </div>
-    </Wrapper>
+    <>
+      {!showStatus ? (
+        <button onClick={handleShowStatus}> Show Users</button>
+      ) : (
+        <Wrapper className="container">
+          <div className="user-container">
+            {users.map((user, index) => {
+              const { avatar_url, login, html_url } = user;
+              return (
+                <div className="user" key={index}>
+                  <h2>{index}</h2>
+
+                  <img src={avatar_url} alt={login} />
+                  <p>{login}</p>
+                  <a href={html_url}> View Github Profile</a>
+                </div>
+              );
+            })}
+          </div>
+          <div className="btn-container">
+            <button className="btn" onClick={handlePrev}>
+              &larr;
+            </button>
+            {users.map((_, index) => {
+              return (
+                <button className="btn" key={index}>
+                  {index + start}
+                </button>
+              );
+            })}
+            <button className="btn" onClick={handleNext}>
+              &rarr;
+            </button>
+          </div>
+        </Wrapper>
+      )}
+    </>
   );
 };
 
@@ -53,13 +112,31 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  .btn-container {
+    display: flex;
+    margin: 5rem auto;
+    .btn {
+      padding: 5px;
+      margin: 1rem;
+      border: none;
+      font-size: 1rem;
+      border-radius: 50%;
+      text-align: center;
+
+      color: #e84118;
+    }
+  }
   @media (min-width: 600px) {
     .user-container {
       display: grid;
       gap: 3rem 5rem;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       grid-template-rows: auto;
     }
+  }
+  @media (min-width: 800px) {
+    grid-template-columns: repeat(4, 1fr);
   }
 `;
 export default Followers;

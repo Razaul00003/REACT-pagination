@@ -17,7 +17,7 @@ const App = () => {
         setLoading(false);
         setError(true);
       });
-  }, [data, loading, error]);
+  }, [loading, error]);
   return (
     <>
       <p className="primary-heading">
