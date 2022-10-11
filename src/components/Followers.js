@@ -40,7 +40,13 @@ const Followers = (props) => {
   return (
     <>
       {!showStatus ? (
-        <button onClick={handleShowStatus}> Show Users</button>
+        <button
+          style={{ padding: "1rem 2rem", color: "#e84118", border: "none" }}
+          onClick={handleShowStatus}
+        >
+          {" "}
+          Show Users
+        </button>
       ) : (
         <Wrapper className="container">
           <div className="user-container">
@@ -48,8 +54,6 @@ const Followers = (props) => {
               const { avatar_url, login, html_url } = user;
               return (
                 <div className="user" key={index}>
-                  <h2>{index}</h2>
-
                   <img src={avatar_url} alt={login} />
                   <p>{login}</p>
                   <a href={html_url}> View Github Profile</a>
@@ -79,21 +83,22 @@ const Followers = (props) => {
 };
 
 const Wrapper = styled.div`
+  .show-user {
+    padding: 1rem 2rem;
+  }
   .user-container {
     text-align: center;
 
     display: block;
-    justify-content: space-between;
-    flex-wrap: wrap;
     .user {
-      height: auto;
-      width: 100%;
+      height: 350px;
+      max-width: 300px;
       padding: 1rem;
       border-radius: 3px;
       background-color: #fff;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: space-between;
       img {
         max-height: auto;
         max-width: 250px;
@@ -114,12 +119,17 @@ const Wrapper = styled.div`
   }
 
   .btn-container {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
     display: flex;
     margin: 5rem auto;
     .btn {
       padding: 5px;
       margin: 1rem;
       border: none;
+      height: 2rem;
+      width: 2rem;
       font-size: 1rem;
       border-radius: 50%;
       text-align: center;
@@ -136,7 +146,10 @@ const Wrapper = styled.div`
     }
   }
   @media (min-width: 800px) {
-    grid-template-columns: repeat(4, 1fr);
+    .user-container {
+      grid-template-columns: auto auto auto;
+      grid-template-rows: auto;
+    }
   }
 `;
 export default Followers;
